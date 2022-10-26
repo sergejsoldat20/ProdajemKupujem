@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ProdajemKupujem.Models.Product>
+@using Microsoft.AspNet.Identity
+@inject ProdajemKupujem.Data.ApplicationDbContext context
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    var userId = User.Identity.GetUserId();
+    var user = context.Users.FirstOrDefault(x => x.Id == Int32.Parse(userId));
+}
+
+<h2>User Products</h2>
+<h3>@user.FirstName @user.LastName</h3>
+<p>
+    <a class="btn btn-success"asp-action="Create" asp-controller="Products">Create</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td> 
+                <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id" asp-controller="Products">Edit</a>
+                    <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id" asp-controller="Products">Details</a>
+                    <a class="btn btn-success" asp-action="Delete" asp-route-id="@item.Id" asp-controller="Products">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

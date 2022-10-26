@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+        <a class="nav-link active" asp-area="" asp-controller="ApplicationUsers" asp-action="Index">Profile</a>
+}
