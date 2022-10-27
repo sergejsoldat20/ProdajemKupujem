@@ -22,6 +22,10 @@ namespace ProdajemKupujem.Data
             builder.ApplyConfiguration(new ProductConfiguration());
             base.OnModelCreating(builder);
         }
+
+        /*public DbSet<ProdajemKupujem.Models.ApplicationUser> Users { get; set; }*/
+
+        public DbSet<ProdajemKupujem.Models.Comment> Comment { get; set; }
     }
 
 }

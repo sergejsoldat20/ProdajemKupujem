@@ -1,29 +1,33 @@
 ﻿@model IEnumerable<ProdajemKupujem.Models.Comment>
-
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ProdajemKupujem.Models.ApplicationUser> UserManager
+@inject SignInManager<ProdajemKupujem.Models.ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@{
+    var productId = Context.GetRouteData().Values["Id"];
+}
+<h1>Comments on post</h1>
+@if (SignInManager.IsSignedIn(User)){
+    <p>
+        <a class="btn btn-success" asp-action="Create" asp-route-id="@productId">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.User.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Name)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Text)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -31,21 +35,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Text)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                <a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RowVersion)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <form asp-action="Delete" method="post" asp-route-id="@item.Id">
+                   <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
             </td>
         </tr>
 }

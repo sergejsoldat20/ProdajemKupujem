@@ -42,7 +42,7 @@ namespace ProdajemKupujem.Controllers
         }
 
         
-        // POST/Administraion/UpdateAdmin
+        // POST Administraion/UpdateAdmin
         [HttpPost]
         public async Task<IActionResult> UpdateUserToAdmin(int Id)
         {

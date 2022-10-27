@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<ProdajemKupujem.Models.Product>
-
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ProdajemKupujem.Models.ApplicationUser> UserManager
+@inject SignInManager<ProdajemKupujem.Models.ApplicationUser> SignInManager
 @{
     ViewData["Title"] = "Index";
 }
@@ -51,6 +53,8 @@
             </td>
             <td>
                 <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id" asp-controller="Products">Details</a>
+
+                <a class="btn btn-success" asp-action="Index" asp-route-id="@item.Id" asp-controller="Comments">Comments</a>
             </td>
         </tr>
 }
