@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProdajemKupujem.Data;
 using ProdajemKupujem.Models;
+using ProdajemKupujem.Models.Enums;
 
 namespace ProdajemKupujem.Controllers
 {
@@ -33,6 +35,7 @@ namespace ProdajemKupujem.Controllers
         }
 
         // GET: Comments/Create
+        [Authorize(Roles = Consts.User)]
         public IActionResult Create()
         {
             ViewData["ProductId"] = new SelectList(_context.Product, "Id", "Id");
@@ -43,6 +46,7 @@ namespace ProdajemKupujem.Controllers
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = Consts.User)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Guid id, Comment comment)
@@ -60,6 +64,7 @@ namespace ProdajemKupujem.Controllers
         }
 
         // GET: Comments/Edit/5
+        [Authorize(Roles = Consts.User)]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.Comment == null)
@@ -82,6 +87,7 @@ namespace ProdajemKupujem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Consts.User)]
         public async Task<IActionResult> Edit(Guid id,[Bind("Id,UserId,Text,ProductId,RowVersion")] Comment comment)
         {
             if (id != comment.Id)
@@ -106,7 +112,7 @@ namespace ProdajemKupujem.Controllers
             }
             return RedirectToAction("Index", new {id = comment.ProductId });
         }
-
+        [Authorize(Roles = Consts.User)]
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
