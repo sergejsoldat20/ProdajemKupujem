@@ -1,9 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ProdajemKupujem.Models.ApplicationUser> SignInManager
+@inject UserManager<ProdajemKupujem.Models.ApplicationUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
         <a class="nav-link active" asp-area="" asp-controller="ApplicationUsers" asp-action="Index">Profile</a>
-}
+        if (User.IsInRole(ProdajemKupujem.Models.Enums.Consts.Admin))
+        {
+            <a class="nav-link active" asp-area="" asp-controller="Administration" asp-action="Index">Administration</a>
+        }
+    }

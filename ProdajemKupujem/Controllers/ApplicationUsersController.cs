@@ -37,5 +37,12 @@ namespace ProdajemKupujem.Controllers
 
             return View(await products.ToListAsync());
         }
+
+        public ApplicationUser GetCurrentUser() { 
+        
+            ClaimsPrincipal currentUser = this.User;
+            int userId = Int32.Parse(_userManager.GetUserId(currentUser));
+            return _context.Users.FirstOrDefault(x => x.Id == userId);
+        }
     } 
 }

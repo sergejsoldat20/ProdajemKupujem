@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProdajemKupujem.Data;
 using ProdajemKupujem.Models;
 using ProdajemKupujem.Models.Enums;
+
 
 namespace ProdajemKupujem.Controllers
 {
@@ -117,14 +118,26 @@ namespace ProdajemKupujem.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var comment = _context.Comment.FirstOrDefault(c => c.Id.Equals(id));
-            _context.Comment.Remove(comment);
-            await _context.SaveChangesAsync();
+            if (UserHasProduct(id))
+            {
+                _context.Comment.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction("Index", new { id = comment.ProductId });
          }
 
         private bool CommentExists(Guid id)
         {
           return _context.Comment.Any(e => e.Id == id);
+        }
+
+        public bool UserHasProduct(Guid productId) 
+        {
+            var currentUserId = Int32.Parse(_userManager.GetUserId(this.User));
+            var currentUserProducts = from product in _context.Product
+                                      where product.UserId == currentUserId
+                                      select product;
+            return currentUserProducts.Any(p => p.Id == productId);
         }
     }
 }
