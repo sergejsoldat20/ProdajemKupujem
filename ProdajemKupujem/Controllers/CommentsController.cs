@@ -61,7 +61,7 @@ namespace ProdajemKupujem.Controllers
             };
             _context.Add(_comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index",new { id = id});
+            return RedirectToAction("Index", new { id = id });
         }
 
         // GET: Comments/Edit/5
@@ -89,7 +89,7 @@ namespace ProdajemKupujem.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Consts.User)]
-        public async Task<IActionResult> Edit(Guid id,[Bind("Id,UserId,Text,ProductId,RowVersion")] Comment comment)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,UserId,Text,ProductId,RowVersion")] Comment comment)
         {
             if (id != comment.Id)
             {
@@ -111,14 +111,14 @@ namespace ProdajemKupujem.Controllers
                     throw;
                 }
             }
-            return RedirectToAction("Index", new {id = comment.ProductId });
+            return RedirectToAction("Index", new { id = comment.ProductId });
         }
         [Authorize(Roles = Consts.User)]
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
             var comment = _context.Comment.FirstOrDefault(c => c.Id.Equals(id));
-            if (UserHasProduct(id))
+            if (UserHasProduct(comment.ProductId) || UserHasComment(comment.Id))
             {
                 _context.Comment.Remove(comment);
                 await _context.SaveChangesAsync();
@@ -138,6 +138,15 @@ namespace ProdajemKupujem.Controllers
                                       where product.UserId == currentUserId
                                       select product;
             return currentUserProducts.Any(p => p.Id == productId);
+        }
+
+        public bool UserHasComment(Guid commentId)
+        {
+            var currentUserId = Int32.Parse(_userManager.GetUserId(this.User));
+            var currentUserComments = from comment in _context.Comment
+                                      where comment.UserId == currentUserId
+                                      select comment;
+            return currentUserComments.Any(c => c.Id == commentId);
         }
     }
 }
