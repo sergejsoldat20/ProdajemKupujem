@@ -1,18 +1,15 @@
 ﻿@model IEnumerable<ProdajemKupujem.Models.Product>
-@using Microsoft.AspNet.Identity
+@using Microsoft.AspNetCore.Identity
 @inject ProdajemKupujem.Data.ApplicationDbContext context
 
 
 @{
     ViewData["Title"] = "Index";
 }
-@{
-    var userId = User.Identity.GetUserId();
-    var user = context.Users.FirstOrDefault(x => x.Id == Int32.Parse(userId));
-}
+
 
 <h2>User Products</h2>
-<h3>@user.FirstName @user.LastName</h3>
+<h3>@this.User.Identity.Name</h3>
 <p>
     <a class="btn btn-success"asp-action="Create" asp-controller="Products">Create</a>
 </p>

@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ProdajemKupujem.Data;
+using ProdajemKupujem.Hubs;
 using ProdajemKupujem.Models;
+using ProdajemKupujem.Services;
 
 namespace ProdajemKupujem
 {
@@ -26,14 +28,15 @@ namespace ProdajemKupujem
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
             }).AddRoles<IdentityRole<int>>().AddEntityFrameworkStores<ApplicationDbContext>();
-
+            builder.Services.AddSignalR();
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdministratorRole",
                     policy => policy.RequireRole("Administrator"));
             });
             builder.Services.AddControllersWithViews();
-            
+
+            builder.Services.AddScoped<IChatService, ChatService>();
 
             var app = builder.Build();
 
@@ -56,6 +59,9 @@ namespace ProdajemKupujem
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapHub<ChatHub>("/chatHub");
+            
 
             app.MapControllerRoute(
                 name: "default",

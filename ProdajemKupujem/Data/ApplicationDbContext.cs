@@ -13,8 +13,7 @@ namespace ProdajemKupujem.Data
         {
         }
         public DbSet<ProdajemKupujem.Models.Product> Product { get; set; }
-
-        /*public DbSet<ProdajemKupujem.Models.ApplicationUser> Users { get; set; }*/
+        public DbSet<ProdajemKupujem.Models.Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,8 +21,6 @@ namespace ProdajemKupujem.Data
             builder.ApplyConfiguration(new ProductConfiguration());
             base.OnModelCreating(builder);
         }
-
-        /*public DbSet<ProdajemKupujem.Models.ApplicationUser> Users { get; set; }*/
 
         public DbSet<ProdajemKupujem.Models.Comment> Comment { get; set; }
     }

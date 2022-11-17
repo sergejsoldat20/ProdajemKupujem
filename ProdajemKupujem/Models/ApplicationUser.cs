@@ -12,5 +12,8 @@ namespace ProdajemKupujem.Models
         public string photoURL { get; set; } = "";
         public List<Product> Products { get; set; } = new List<Product>(); 
         public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<Message> MessagesRecieved { get; set; } = new List<Message>();
+        public List<Message> MessagesSent { get; set; } = new List<Message>();
+
     }
 }

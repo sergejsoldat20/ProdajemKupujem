@@ -63,7 +63,7 @@ namespace ProdajemKupujem.Controllers
         }
 
         // GET: Products/Create
-      
+        
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -89,13 +89,13 @@ namespace ProdajemKupujem.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
-
             var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
@@ -110,38 +110,35 @@ namespace ProdajemKupujem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Product product)
+        [Authorize]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,Price,UserId,Id")] Product product)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                
+                _context.Update(product);
+                await _context.SaveChangesAsync();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", product.UserId);
-            return View(product);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(product.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Products/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.Product == null)
@@ -163,6 +160,7 @@ namespace ProdajemKupujem.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Product == null)
@@ -177,6 +175,16 @@ namespace ProdajemKupujem.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool CurrentUserHasProduct(Guid id)
+        {
+            ClaimsPrincipal currentUser = this.User;
+            int currentUserId = Int32.Parse(_userManager.GetUserId(currentUser));
+            var currentUserProducts = from product in _context.Product
+                                      where product.UserId == currentUserId
+                                      select product;
+            return currentUserProducts.Any(x => x.Id == id);
         }
 
         private bool ProductExists(Guid id)

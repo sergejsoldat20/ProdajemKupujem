@@ -12,8 +12,8 @@ using ProdajemKupujem.Data;
 namespace ProdajemKupujem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221025175522_Comments")]
-    partial class Comments
+    [Migration("20221114140924_chat")]
+    partial class chat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -298,6 +298,40 @@ namespace ProdajemKupujem.Migrations
                     b.ToTable("Image");
                 });
 
+            modelBuilder.Entity("ProdajemKupujem.Models.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RecieverId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecieverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("ProdajemKupujem.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -412,6 +446,25 @@ namespace ProdajemKupujem.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ProdajemKupujem.Models.Message", b =>
+                {
+                    b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Reciever")
+                        .WithMany("MessagesRecieved")
+                        .HasForeignKey("RecieverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Sender")
+                        .WithMany("MessagesSent")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Reciever");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("ProdajemKupujem.Models.Product", b =>
                 {
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "User")
@@ -426,6 +479,10 @@ namespace ProdajemKupujem.Migrations
             modelBuilder.Entity("ProdajemKupujem.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("MessagesRecieved");
+
+                    b.Navigation("MessagesSent");
 
                     b.Navigation("Products");
                 });
