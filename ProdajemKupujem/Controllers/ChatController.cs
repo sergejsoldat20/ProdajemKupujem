@@ -31,7 +31,7 @@ namespace ProdajemKupujem.Controllers
         // GET
         public async Task<IActionResult> UserChat(int id)
         { 
-            int currentId = Int32.Parse(_userManager.GetUserId(this.User));
+            int currentId = Int32.Parse(_userManager.GetUserId(this.User)); 
             var receiver = from user in _context.Users
                            where user.Id == id
                            select user;
@@ -44,5 +44,20 @@ namespace ProdajemKupujem.Controllers
                            select message;
             return View(await messages.ToListAsync());
         }
-    }
+
+        [HttpPost]
+        public async Task SaveMessage(int id, string message)
+        {
+            int currentId = Int32.Parse(_userManager.GetUserId(this.User));
+            var Message = new Message()
+            {
+                SenderId = currentId,
+                RecieverId = id,
+                Text = "poruka 1",
+                IsSeen = false
+            };
+            _context.Messages.Add(Message);
+            await _context.SaveChangesAsync();
+        }
+     }
 }
