@@ -5,12 +5,14 @@
 @{
     var currentUserEmail = ViewBag.CurrentUserEmail;
     var target = ViewBag.ReceiverEmail;
+    var currentUserFirstName = ViewBag.CurrentUserFirstName;
 }
+<h2>@currentUserFirstName</h2>
 <div class="container">
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-2">User</div>
-        <div class="col-4"><input class="form-control" type="text" id="userInput" /></div>
+        <div class="col-4"><input class="form-control" type="text" id="userInput" value="@currentUserFirstName"/></div>
     </div>
     <div class="row">
         <div class="col-2">Target</div>
@@ -23,7 +25,7 @@
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-6">
-            <input type="button" class="btn btn-secondary" id="sendButton" value="Send Message" />
+            <input type="button" class="btn btn-danger" id="sendButton" value="Send Message" />
         </div>
     </div>
 </div>

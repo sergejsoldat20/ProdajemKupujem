@@ -38,26 +38,12 @@ namespace ProdajemKupujem.Controllers
             ViewBag.CurrentUserEmail = _userManager.GetUserName(this.User);
             ViewBag.ReceiverId = id;
             ViewBag.ReceiverEmail = receiver.FirstOrDefault().Email;
+            ViewBag.CurrentUserFirstName = _context.Users.FirstOrDefault(u => u.Id == currentId).FirstName;
             var messages = from message in _context.Messages.Include(u => u.Reciever).Include(u => u.Sender)
                            where message.SenderId == currentId &&
                            message.RecieverId == id
                            select message;
             return View(await messages.ToListAsync());
-        }
-
-        [HttpPost]
-        public async Task SaveMessage(int id, string message)
-        {
-            int currentId = Int32.Parse(_userManager.GetUserId(this.User));
-            var Message = new Message()
-            {
-                SenderId = currentId,
-                RecieverId = id,
-                Text = "poruka 1",
-                IsSeen = false
-            };
-            _context.Messages.Add(Message);
-            await _context.SaveChangesAsync();
         }
      }
 }

@@ -7,8 +7,7 @@ namespace ProdajemKupujem.Hubs
 {
     public class ChatHub : Hub
     {
-        //define a dictionary to store the userid.
-        private static Dictionary<string,string> UserToConnectionIdMap = new Dictionary<string, string>();
+        public static Dictionary<string,string> UserToConnectionIdMap = new Dictionary<string, string>();
 
         public override async Task OnConnectedAsync()
         {
@@ -19,12 +18,12 @@ namespace ProdajemKupujem.Hubs
 
             await base.OnConnectedAsync();
         }
+
         public async Task SendMessageToAll(string user, string message)
         {
 
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
-
 
         public async Task SendMessage(string user, string message, string receiver)
         {
