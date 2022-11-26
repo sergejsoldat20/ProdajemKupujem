@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProdajemKupujem.Data;
 using ProdajemKupujem.Models;
 using Microsoft.EntityFrameworkCore;
-using ProdajemKupujem.Migrations;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ProdajemKupujem.Controllers

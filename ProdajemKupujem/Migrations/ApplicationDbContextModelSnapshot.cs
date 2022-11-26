@@ -423,7 +423,7 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.Product", "Product")
                         .WithMany("Comments")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "User")
@@ -442,7 +442,7 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.Product", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -453,13 +453,13 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Receiver")
                         .WithMany("MessagesRecieved")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Receiver");

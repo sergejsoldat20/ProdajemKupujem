@@ -12,8 +12,8 @@ using ProdajemKupujem.Data;
 namespace ProdajemKupujem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221126153550_mig")]
-    partial class mig
+    [Migration("20221126155628_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -425,7 +425,7 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.Product", "Product")
                         .WithMany("Comments")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "User")
@@ -444,7 +444,7 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.Product", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -455,13 +455,13 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Receiver")
                         .WithMany("MessagesRecieved")
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Receiver");

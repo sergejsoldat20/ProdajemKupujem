@@ -12,13 +12,13 @@ namespace ProdajemKupujem.Data.Configurations
              .HasMany(u => u.MessagesRecieved)
              .WithOne(m => m.Receiver)
              .HasForeignKey(m => m.ReceiverId)
-             .OnDelete(DeleteBehavior.Restrict);
+             .OnDelete(DeleteBehavior.NoAction);
 
             builder
               .HasMany(u => u.MessagesSent)
               .WithOne(m => m.Sender)
               .HasForeignKey(m => m.SenderId)
-              .OnDelete(DeleteBehavior.Restrict);
+              .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasMany(u => u.Products)

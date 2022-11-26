@@ -19,15 +19,12 @@ namespace ProdajemKupujem.Hubs
         {
             var username = Context.User.Identity.Name;
             var userId = Context.UserIdentifier;
-
             UserToConnectionIdMap.Add(username, userId);
-
             await base.OnConnectedAsync();
         }
 
         public async Task SendMessageToAll(string user, string message)
         {
-
             await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
