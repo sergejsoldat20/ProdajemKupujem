@@ -11,13 +11,14 @@ namespace ProdajemKupujem.Data.Configurations
             builder.
              HasMany(p => p.Images).
              WithOne(p => p.Product).
-             HasForeignKey(i => i.ProductId);
+             HasForeignKey(i => i.ProductId).
+             OnDelete(DeleteBehavior.Cascade);
 
             builder.
                 HasMany(p => p.Comments).
                 WithOne(c => c.Product).
                 HasForeignKey(c => c.ProductId).
-                OnDelete(DeleteBehavior.NoAction);
+                OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

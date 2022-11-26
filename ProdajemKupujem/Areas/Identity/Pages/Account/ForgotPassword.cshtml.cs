@@ -25,7 +25,7 @@ namespace ProdajemKupujem.Areas.Identity.Pages.Account
         public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _emailSender = new ProdajemKupujem.Services.EmailSender();
         }
 
         /// <summary>

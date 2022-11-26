@@ -302,10 +302,14 @@ namespace ProdajemKupujem.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ChatId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsSeen")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RecieverId")
+                    b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -323,7 +327,7 @@ namespace ProdajemKupujem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RecieverId");
+                    b.HasIndex("ReceiverId");
 
                     b.HasIndex("SenderId");
 
@@ -419,7 +423,7 @@ namespace ProdajemKupujem.Migrations
                     b.HasOne("ProdajemKupujem.Models.Product", "Product")
                         .WithMany("Comments")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "User")
@@ -446,9 +450,9 @@ namespace ProdajemKupujem.Migrations
 
             modelBuilder.Entity("ProdajemKupujem.Models.Message", b =>
                 {
-                    b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Reciever")
+                    b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Receiver")
                         .WithMany("MessagesRecieved")
-                        .HasForeignKey("RecieverId")
+                        .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -458,7 +462,7 @@ namespace ProdajemKupujem.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Reciever");
+                    b.Navigation("Receiver");
 
                     b.Navigation("Sender");
                 });

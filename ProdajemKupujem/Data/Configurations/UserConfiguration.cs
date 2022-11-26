@@ -10,8 +10,8 @@ namespace ProdajemKupujem.Data.Configurations
         {
             builder
              .HasMany(u => u.MessagesRecieved)
-             .WithOne(m => m.Reciever)
-             .HasForeignKey(m => m.RecieverId)
+             .WithOne(m => m.Receiver)
+             .HasForeignKey(m => m.ReceiverId)
              .OnDelete(DeleteBehavior.Restrict);
 
             builder

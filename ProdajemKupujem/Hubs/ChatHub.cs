@@ -8,6 +8,12 @@ namespace ProdajemKupujem.Hubs
     public class ChatHub : Hub
     {
         public static Dictionary<string,string> UserToConnectionIdMap = new Dictionary<string, string>();
+        private readonly ApplicationDbContext _context;
+
+        public ChatHub(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public override async Task OnConnectedAsync()
         {
@@ -31,6 +37,15 @@ namespace ProdajemKupujem.Hubs
             if (userId != null)
             {
                 await Clients.User(userId).SendAsync("ReceiveMessage", user, message);
+
+                var sender = await _context.Users.FindAsync(user);
+                var receiverUser = await _context.Users.FindAsync(receiver);
+
+                ///TODO: save to database
+                //Message newMessage = new(message, user, receiver, sender, receiverUser);
+                //newMessage.SenderId = user;
+                //newMessage.RecieverId = receiver;
+
             }
         }
 

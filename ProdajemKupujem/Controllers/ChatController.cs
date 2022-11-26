@@ -28,22 +28,33 @@ namespace ProdajemKupujem.Controllers
                         select user;
             return View(await users.ToListAsync());
         }
+
         // GET
         public async Task<IActionResult> UserChat(int id)
         { 
             int currentId = Int32.Parse(_userManager.GetUserId(this.User)); 
-            var receiver = from user in _context.Users
+            /*var receiver = from user in _context.Users
                            where user.Id == id
                            select user;
+            */
+            var receiver = _context.Users.Where(x => x.Id == id).FirstOrDefault();
+
+            //Assert(receiver == null)
+            if (receiver == null)
+                return NotFound(); //raise exception
+
             ViewBag.CurrentUserEmail = _userManager.GetUserName(this.User);
             ViewBag.ReceiverId = id;
-            ViewBag.ReceiverEmail = receiver.FirstOrDefault().Email;
+            ViewBag.ReceiverEmail = receiver.Email;
             ViewBag.CurrentUserFirstName = _context.Users.FirstOrDefault(u => u.Id == currentId).FirstName;
-            var messages = from message in _context.Messages.Include(u => u.Reciever).Include(u => u.Sender)
-                           where message.SenderId == currentId &&
-                           message.RecieverId == id
-                           select message;
-            return View(await messages.ToListAsync());
+
+            var messages = await _context
+                .Messages
+                .Where(x => x.ChatId == Message.GetChatId(currentId, id))
+                //.OrderByDescending(x => x.CreatedDate)
+                .ToListAsync();
+
+            return View(messages);
         }
      }
 }
