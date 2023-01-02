@@ -13,7 +13,7 @@ namespace ProdajemKupujem.Data
         {
         }
         public DbSet<ProdajemKupujem.Models.Product> Product { get; set; }
-        public DbSet<ProdajemKupujem.Models.Message> Messages { get; set; }
+        public DbSet<ProdajemKupujem.Models.Message> Message { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

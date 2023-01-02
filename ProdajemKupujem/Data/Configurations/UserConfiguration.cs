@@ -8,17 +8,6 @@ namespace ProdajemKupujem.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder
-             .HasMany(u => u.MessagesRecieved)
-             .WithOne(m => m.Receiver)
-             .HasForeignKey(m => m.ReceiverId)
-             .OnDelete(DeleteBehavior.NoAction);
-
-            builder
-              .HasMany(u => u.MessagesSent)
-              .WithOne(m => m.Sender)
-              .HasForeignKey(m => m.SenderId)
-              .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasMany(u => u.Products)
@@ -29,6 +18,8 @@ namespace ProdajemKupujem.Data.Configurations
                 .HasMany(u => u.Comments)
                 .WithOne(c => c.User)
                 .HasForeignKey(c => c.UserId);
+
+            
         }
 
     }

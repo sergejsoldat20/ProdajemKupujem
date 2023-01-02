@@ -12,14 +12,14 @@ using ProdajemKupujem.Data;
 namespace ProdajemKupujem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221126155628_init")]
+    [Migration("20221229164337_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -308,11 +308,9 @@ namespace ProdajemKupujem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsSeen")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -320,18 +318,15 @@ namespace ProdajemKupujem.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -450,25 +445,6 @@ namespace ProdajemKupujem.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ProdajemKupujem.Models.Message", b =>
-                {
-                    b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Receiver")
-                        .WithMany("MessagesRecieved")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ProdajemKupujem.Models.ApplicationUser", "Sender")
-                        .WithMany("MessagesSent")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("ProdajemKupujem.Models.Product", b =>
                 {
                     b.HasOne("ProdajemKupujem.Models.ApplicationUser", "User")
@@ -483,10 +459,6 @@ namespace ProdajemKupujem.Migrations
             modelBuilder.Entity("ProdajemKupujem.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("MessagesRecieved");
-
-                    b.Navigation("MessagesSent");
 
                     b.Navigation("Products");
                 });

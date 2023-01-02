@@ -6,27 +6,39 @@ namespace ProdajemKupujem.Models
 {
     public class Message : BaseModel
     {
-        public static string GetChatId(int senderId, int receiverId)
-            => senderId < receiverId ? $"{senderId}-{receiverId}" : $"{receiverId}-{senderId}";
-
-        public Message() { }
-        public Message(string text, int senderId, int receiverId, ApplicationUser sender, ApplicationUser receiver, bool isSeen = false)
+        public Message()
         {
-            Text = text;
-            SenderId = senderId;
-            ReceiverId = receiverId;
-            ChatId = Message.GetChatId(senderId, receiverId);
-            Sender = sender;
-            Receiver = receiver;
-            IsSeen = isSeen;
+            SenderId = "";
+            ReceiverId = "";
+        }
+        public string SenderId { get; private set; }
+        public string ReceiverId { get; private set; }
+
+        public void SetSenderId(string senderId)
+        {
+            this.SenderId = senderId;
+            this.ChatId = Message.GenerateChatId(this.SenderId, this.ReceiverId);
         }
 
-        public string Text { get; set; }
-        public int SenderId { get; private set; }
-        public int ReceiverId { get; private set; }
-        public string ChatId { get; set; }
-        public ApplicationUser Sender { get; set; }
-        public ApplicationUser Receiver { get; set; }
-        public bool IsSeen { get; set; }
+        public void SetReceiverId(string receiverId)
+        {
+            this.ReceiverId = receiverId;
+            this.ChatId = Message.GenerateChatId(this.SenderId, this.ReceiverId);
+        }
+
+        public string Text { get; set; } = "";
+        public string ChatId { get; private set; } = "";
+
+        public static string GenerateChatId(string SenderId, string ReceiverId)
+        {
+            if (String.Compare(SenderId, ReceiverId) < 0)
+            {
+                return SenderId.ToString() + ";" + ReceiverId.ToString();
+            }
+            else
+            {
+                return ReceiverId.ToString() + ";" + SenderId.ToString();
+            }
+        }
     }
 }

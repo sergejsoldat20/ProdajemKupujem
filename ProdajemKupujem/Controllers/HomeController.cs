@@ -25,7 +25,6 @@ namespace ProdajemKupujem.Controllers
 
         public IActionResult Index(int id)
         {
-            var messages = _context.Messages;
             return View();
         }
 

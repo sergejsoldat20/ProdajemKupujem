@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ProdajemKupujem.Data;
-using ProdajemKupujem.Hubs;
 using ProdajemKupujem.Models;
 using ProdajemKupujem.Services;
 
@@ -59,8 +58,6 @@ namespace ProdajemKupujem
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.MapHub<ChatHub>("/chatHub");
             
 
             app.MapControllerRoute(

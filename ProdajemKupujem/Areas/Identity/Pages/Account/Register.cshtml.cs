@@ -21,7 +21,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ProdajemKupujem.Data;
-using ProdajemKupujem.Hubs;
 using ProdajemKupujem.Models;
 using ProdajemKupujem.Models.Enums;
 
