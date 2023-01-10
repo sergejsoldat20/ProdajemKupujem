@@ -34,7 +34,7 @@ namespace ProdajemKupujem.Controllers
             return View(receivers);
         }
 
-        
+        [Authorize]
         [HttpGet("[controller]/GetForChat/{userId}")]
         public async Task<string> GetForChat(string userId)
         {
